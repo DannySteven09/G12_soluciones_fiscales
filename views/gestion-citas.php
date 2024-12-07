@@ -1,58 +1,12 @@
 <?php
 require_once '../controllers/citaController.php';
-$citas = CitaController::listarCitas();
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Citas</title>
-    <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-    <?php include 'menu.php'; ?>
-    <main class="content">
-        <h2 class="header-title">Gestión de Citas</h2>
-        <a href="form-cita.php" class="btn btn-primary">Agregar Cita</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Fecha y Hora</th>
-                    <th>Descripción</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($citas as $cita): ?>
-                <tr>
-                    <td><?php echo $cita['id_cita']; ?></td>
-                    <td><?php echo $cita['cliente']; ?></td>
-                    <td><?php echo $cita['fecha_hora']; ?></td>
-                    <td><?php echo $cita['descripcion']; ?></td>
-                    <td><?php echo $cita['estado']; ?></td>
-                    <td>
-                        <a href="form-cita.php?id=<?php echo $cita['id_cita']; ?>">Editar</a>
-                        <a href="../controllers/citaController.php?action=eliminar&id=<?php echo $cita['id_cita']; ?>">Eliminar</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </main>
-</body>
-</html>
-<?php
-require_once '../controllers/citaController.php';
 require_once '../controllers/clienteController.php';
 
-$cita = null;
+// Obtener lista de clientes
 $clientes = ClienteController::listarClientes();
 
+// Verificar si se está editando una cita existente
+$cita = null;
 if (isset($_GET['id'])) {
     $cita = CitaController::obtenerCitaPorId($_GET['id']);
 }
@@ -63,7 +17,7 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Cita</title>
+    <title><?php echo isset($cita) ? 'Editar Cita' : 'Agregar Cita'; ?></title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
